@@ -8,4 +8,12 @@ data = yf.Ticker(input).history(period='5y')
 
 print(data.info())
 
+def dow_jones():
+
+    data = yf.Ticker("DJI").history(period='5y')
+
+    return data.info()
+
+dow_jones()
+
 #Make a function for 20-day, 50-day, 100-day, 200-day moving averages, using the above to change the timeframe
