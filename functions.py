@@ -13,18 +13,16 @@ yf.pdr_override()
 
 # Create the indices
 def dow_jones():
-    data = pdr.get_data_yahoo("DJI", start="2011-01-01", end="2012-08-20")
+    data = pdr.get_data_yahoo("DJI", period="10y")
     return data
 
 def nasdaq():
-    data = yf.Ticker("IXIC").history(period='10y')
-
-    return data.info()
+    data = pdr.get_data_yahoo("IXIC", period="10y")
+    return data
 
 def sp500():
-    data = yf.Ticker("GSPC").history(period='10y')
-
-    return data.info()
+    data = pdr.get_data_yahoo("GSPC", period="10y")
+    return data
 
 
 
