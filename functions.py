@@ -18,11 +18,19 @@ def sp500():
     data = pdr.get_data_yahoo("GSPC", period="10y")
     return data
 
+def choice(self):
+    #input = input("Choose the stock you would like: ")
+    data = yf.Ticker(self).history(period='5y')
+    return data
 
 
+# Create functions for various information on each stock
 def close(self):
     self = self["Close"]
     return self
+
+
+
 
 #Make a function for 20-day, 50-day, 100-day, 200-day moving averages, using the above to change the timeframe
 
