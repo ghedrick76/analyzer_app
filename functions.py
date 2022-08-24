@@ -18,14 +18,14 @@ def sp500():
     data = pdr.get_data_yahoo("GSPC", period="10y")
     return data
 
-def choice(self):
+def stock(self):
     #input = input("Choose the stock you would like: ")
     data = yf.Ticker(self).history(period='5y')
     return data
 
 
 # Create functions for various information on each stock
-def close(self):
+def close(self): #would need to make a list, iterate upon each one
     self = self["Close"]
     return self
 
