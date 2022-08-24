@@ -14,8 +14,8 @@ def nasdaq():
     ixic = pdr.get_data_yahoo("IXIC", period="10y")
     return ixic
 
-def sp500():
-    data = pdr.get_data_yahoo("GSPC", period="10y")
+def spy():
+    data = pdr.get_data_yahoo("SPY", period="10y")
     return data
 
 def stock(self):
