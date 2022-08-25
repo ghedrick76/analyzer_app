@@ -25,20 +25,24 @@ def stock(self):
 
 
 # Create functions for various information on each stock
-def close(self): #would need to make a list, iterate upon each one
-    self = self["Close"]
-    return self
+def close(*self): #would need to make a list, iterate upon each one
+    
+    return self["Close"]
+
+def close2(self):
+    self = pdr.get_data_yahoo(self, period="10y")
+
+    return self["Close"].plot()
 
 
-
+#def ma20(self):
+    
 
 #Make a function for 20-day, 50-day, 100-day, 200-day moving averages, using the above to change the timeframe
 
+# stock = input("Choose your ticker symbol: ")
+# period = input("What time period would you like to see? ")
 
-
-
-# input = input("Choose your stock symbol: ")
-
-# data = yf.Ticker(input).history(period='5y')
+# data = yf.Ticker(stock).history(period='5y')
 
 # print(data.info())
