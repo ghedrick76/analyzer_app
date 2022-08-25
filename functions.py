@@ -25,14 +25,14 @@ def stock(self):
 
 
 # Create functions for various information on each stock
-def close(*self): #would need to make a list, iterate upon each one
+def close(self): #would need to make a list, iterate upon each one.  Try using (*params)
     
     return self["Close"]
 
 def close2(self):
     self = pdr.get_data_yahoo(self, period="10y")
 
-    return self["Close"].plot()
+    return self["Close"]#.plot()
 
 
 #def ma20(self):
