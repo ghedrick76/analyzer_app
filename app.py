@@ -26,7 +26,7 @@ tickers = pd.concat([nyse,nasdaq]).drop_duplicates().reset_index(drop=True)
 st.title('Finance Dashboard')
 
 # Creates the dropdown box for the user to select tickers
-dropdown = st.multiselect('Pick your assets', tickers)
+dropdown = st.multiselect('Select equities to chart', tickers)
 
 dropdown2 = st.multiselect('Calculate volatility ', tickers)
 
@@ -50,12 +50,13 @@ def returns(df):
     return returns
 
 def calc_vol(df):
+    df = df.pct_change()
     volatility = df.std()*252**.5
     return volatility
 
 if len(dropdown) > 0:
     df = returns(yf.download(dropdown,start,end)['Close'])
-    st.header('Returns of {}'.format(dropdown))
+    st.header('Graph of {}'.format(dropdown))
     st.line_chart(df)
     
 if len(dropdown2) > 0:
