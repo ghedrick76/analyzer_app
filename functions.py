@@ -46,3 +46,5 @@ def close2(self):
 # data = yf.Ticker(stock).history(period='5y')
 
 # print(data.info())
+
+
