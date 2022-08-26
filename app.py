@@ -11,8 +11,14 @@ import matplotlib.pyplot as plt # for visualization
 import seaborn as sns
 import streamlit as st
 
-# Import CSV file of tickers
-tickers = pd.read_csv("untitled.csv")['ACT Symbol']
+# Import CSV files for all tickers
+nyse = pd.read_csv("untitled.csv")['ACT Symbol']
+nasdaq = pd.read_csv("nasdaq.csv")['Symbol']
+
+tickers = pd.concat([nyse,nasdaq]).drop_duplicates().reset_index(drop=True)
+#tickers = nyse.append(nasdaq)
+#tickers.drop_duplicates(keep='last')
+tickers
 
 
 # In[2]:
@@ -28,7 +34,7 @@ start = st.date_input('Start', value = pd.to_datetime('2012-01-01'))
 end = st.date_input('End', value = pd.to_datetime('today'))
 
 
-# In[ ]:
+# In[3]:
 
 
 def relativeret(df):
