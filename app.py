@@ -15,6 +15,7 @@ import streamlit as st
 nyse = pd.read_csv("untitled.csv")['ACT Symbol']
 nasdaq = pd.read_csv("nasdaq.csv")['Symbol']
 
+# Combine the two datasets
 tickers = pd.concat([nyse,nasdaq]).drop_duplicates().reset_index(drop=True)
 
 
@@ -26,6 +27,9 @@ st.title('Finance Dashboard')
 
 # Creates the dropdown box for the user to select tickers
 dropdown = st.multiselect('Pick your assets', tickers)
+
+dropdown2 = st.multiselect('Calculate volatility ', tickers)
+
 
 # Sets the start and end dates
 start = st.date_input('Start', value = pd.to_datetime('2012-01-01'))
@@ -41,14 +45,23 @@ end = st.date_input('End', value = pd.to_datetime('today'))
 #     cumret = cumret.fillna(0)
 #     return cumret
 
-def relativeret(df):
-    rel = df
-    return rel
+def returns(df):
+    returns = df
+    return returns
+
+def calc_vol(df):
+    volatility = df.std()*252**.5
+    return volatility
 
 if len(dropdown) > 0:
-    df = relativeret(yf.download(dropdown,start,end)['Close'])
+    df = returns(yf.download(dropdown,start,end)['Close'])
     st.header('Returns of {}'.format(dropdown))
     st.line_chart(df)
+    
+if len(dropdown2) > 0:
+    df = calc_vol(yf.download(dropdown2,start,end)['Close'])
+    st.header('Volatility of {}'.format(dropdown2))
+    df
     
 
 
