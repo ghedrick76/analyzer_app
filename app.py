@@ -86,6 +86,52 @@ if len(dropdown3) > 1:
     
 
 
+# In[4]:
+
+
+# Start of stock Balance Sheet Form
+with st.form(key = "form2", clear_on_submit=True):
+    st.header("Company Financial Performance")
+    #Creates user input field for stock ticker
+    user_input = st.text_input("Enter stock ticker i.e. AMZN, TSLA, AAPL, etc.")
+    
+    # Takes user input and gets stock ticker
+    ticker_choice = yf.Ticker(user_input)
+    
+    filter_options = ['Annual','Quarterly']
+    
+    result_filter = st.multiselect("Report Type",filter_options)
+    
+    # Shows stock quarterly balance sheet
+    def quarterly_data():
+        st.subheader(user_input + """ Quarterly Balance Sheet""")
+        stock_qtrly_balance = (ticker_choice.quarterly_balance_sheet)
+        stock_qtrly_balance
+    
+    # Shows stock annual balance sheet
+    def annual_data():
+        st.subheader(user_input + """ Annual Balance Sheet""")
+        stock_annual_balance = (ticker_choice.balance_sheet)
+        stock_annual_balance
+
+    # Generates button that executes 'quarterly_data()' and 'annual_data()' on user click 
+    user_submit = st.form_submit_button(label = "Submit")
+    
+    if user_submit:
+        if 'Annual' in result_filter:
+            annual_data()
+    
+    if user_submit:
+        if "Quarterly" in result_filter:
+            quarterly_data()
+
+
+# In[ ]:
+
+
+
+
+
 # # What does the script do? 
 # 
 
