@@ -26,12 +26,16 @@ tickers = pd.concat([nyse,nasdaq]).drop_duplicates().reset_index(drop=True)
 # Create the Streamlit instance
 st.title('Finance Dashboard')
 
+
 # Creates the dropdown boxes for the user to select their tickers and desired functions
 dropdown = st.multiselect('Select equities to chart', tickers)
 
 dropdown2 = st.multiselect('Calculate volatility ', tickers)
 
 dropdown3 = st.multiselect('Calculate the beta of any two tickers', tickers)
+
+dropdown4 = st.multiselect("Plot Moving Averages", tickers)
+window_size = [20, 50, 100, 200]
 
 
 # Sets the start and end dates
@@ -68,6 +72,22 @@ def calc_beta(df):
     covariance = covariance.loc[dropdown3[0], dropdown3[1]]/variance
     return covariance
 
+# Calculates the moving averages of each ticker, based on selection of days
+def sma20(df):
+    rolling = df.rolling(window=20).mean()
+    return rolling
+def sma50(df):
+    rolling = df.rolling(window=50).mean()
+    return rolling
+def sma100(df):
+    rolling = df.rolling(window=100).mean()
+    return rolling
+def sma200(df):
+    rolling = df.rolling(window=200).mean()
+    return rolling
+
+
+
 # Conditionals for each desired function
 if len(dropdown) > 0:
     df = returns(yf.download(dropdown,start,end)['Close'])
@@ -84,6 +104,28 @@ if len(dropdown3) > 1:
     st.header("The beta of {} compared against {} is".format(dropdown3[1], dropdown3[0]))
     st.header(df)
     
+    
+if len(dropdown4) > 0:
+    window_size = st.multiselect("Choose your window size", window_size)
+    if 20 in window_size:
+            df = sma20(yf.download(dropdown4,start,end)['Close'])
+            df2 = returns(yf.download(dropdown4,start,end)['Close'])
+            st.header('20-day Moving Average of {}'.format(dropdown4))
+            a = st.line_chart(df)
+            b = st.line_chart(df2)
+            st.altair_chart(a, b)
+    if 50 in window_size:
+            df = sma50(yf.download(dropdown4,start,end)['Close'])
+            st.header('50 day Moving Average of {}'.format(dropdown4))
+            st.line_chart(df)
+    if 100 in window_size:
+            df = sma100(yf.download(dropdown4,start,end)['Close'])
+            st.header('100 day Moving Average of {}'.format(dropdown4))
+            st.line_chart(df)
+    if 200 in window_size:
+            df = sma200(yf.download(dropdown4,start,end)['Close'])
+            st.header('200 day Moving Average of {}'.format(dropdown4))
+            st.line_chart(df)
 
 
 # In[4]:
@@ -130,6 +172,30 @@ with st.form(key = "form2", clear_on_submit=True):
 
 
 
+    
+    
+    
+    
+
+
+# In[5]:
+
+
+# Conditionals for each desired function
+if len(dropdown) > 0:
+    df = returns(yf.download(dropdown,start,end)['Close'])
+    st.header('Graph of {}'.format(dropdown))
+    st.line_chart(df)
+    
+if len(dropdown2) > 0:
+    df = calc_vol(yf.download(dropdown2,start,end)['Close'])
+    st.header('Volatility of {}'.format(dropdown2))
+    df
+    
+if len(dropdown3) > 1:
+    df = calc_beta(yf.download(dropdown3,start,end)['Close'])
+    st.header("The beta of {} compared against {} is".format(dropdown3[1], dropdown3[0]))
+    st.header(df)
 
 
 # # What does the script do? 
