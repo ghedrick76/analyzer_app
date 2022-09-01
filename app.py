@@ -13,7 +13,7 @@ import seaborn as sns
 import streamlit as st
 
 # Import CSV files for all tickers
-nyse = pd.read_csv("untitled.csv")['ACT Symbol']
+nyse = pd.read_csv("nyse.csv")['ACT Symbol']
 nasdaq = pd.read_csv("nasdaq.csv")['Symbol']
 
 # Combine the two datasets
@@ -25,6 +25,7 @@ tickers = pd.concat([nyse,nasdaq]).drop_duplicates().reset_index(drop=True)
 
 # Create the Streamlit instance
 st.title('Finance Dashboard')
+st.header('Stock Analyzer')
 
 
 # Creates the dropdown boxes for the user to select their tickers and desired functions
@@ -46,12 +47,6 @@ end = st.date_input('End', value = pd.to_datetime('today'))
 # In[3]:
 
 
-# def relativeret(df):
-#     rel = df.pct_change()
-#     cumret = (1+rel).cumprod() - 1
-#     cumret = cumret.fillna(0)
-#     return cumret
-
 # Build functions for user actions
 
 # Graphs the ticker
@@ -72,7 +67,7 @@ def calc_beta(df):
     covariance = covariance.loc[dropdown3[0], dropdown3[1]]/variance
     return covariance
 
-# Calculates the moving averages of each ticker, based on selection of days
+# Calculates the moving averages of each ticker, based on user's choice of timeframe
 def sma20(df):
     rolling = df.rolling(window=20).mean()
     return rolling
@@ -109,11 +104,8 @@ if len(dropdown4) > 0:
     window_size = st.multiselect("Choose your window size", window_size)
     if 20 in window_size:
             df = sma20(yf.download(dropdown4,start,end)['Close'])
-            df2 = returns(yf.download(dropdown4,start,end)['Close'])
             st.header('20-day Moving Average of {}'.format(dropdown4))
-            a = st.line_chart(df)
-            b = st.line_chart(df2)
-            st.altair_chart(a, b)
+            st.line_chart(df)
     if 50 in window_size:
             df = sma50(yf.download(dropdown4,start,end)['Close'])
             st.header('50 day Moving Average of {}'.format(dropdown4))
@@ -168,52 +160,16 @@ with st.form(key = "form2", clear_on_submit=True):
             quarterly_data()
 
 
+# # Change the notebook to a .py file to run streamlit
+# 
+
 # In[ ]:
 
 
-
-    
-    
-    
-    
+# Converts notebook to .py
 
 
-# In[5]:
-
-
-# Conditionals for each desired function
-if len(dropdown) > 0:
-    df = returns(yf.download(dropdown,start,end)['Close'])
-    st.header('Graph of {}'.format(dropdown))
-    st.line_chart(df)
-    
-if len(dropdown2) > 0:
-    df = calc_vol(yf.download(dropdown2,start,end)['Close'])
-    st.header('Volatility of {}'.format(dropdown2))
-    df
-    
-if len(dropdown3) > 1:
-    df = calc_beta(yf.download(dropdown3,start,end)['Close'])
-    st.header("The beta of {} compared against {} is".format(dropdown3[1], dropdown3[0]))
-    st.header(df)
-
-
-# # What does the script do? 
-# 
-
-# Converts NB to .py
-# `jupyter nbconvert   --to script YOURNAME.ipynb`
-# 
-# 
-# 
-# 
-# 
 # Runs the local streamlit app
-# `streamlit run app.py`
-
-# In[ ]:
-
-
 
 
 # In[ ]:
