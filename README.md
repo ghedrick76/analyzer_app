@@ -22,3 +22,5 @@ seaborn
 streamlit
 
 Once dependencies are installed, download beta_analyzer.ipynb and either run in Jupyter Lab or in terminal using streamlit run ".../beta_analyzer.ipynb".  Streamlit instance will load, allowing user to analyze equities.
+
+A deployed version can be found here: https://ghedrick76-analyzer-app-app-335bqe.streamlitapp.com/
